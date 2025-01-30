@@ -2,14 +2,11 @@ const { v4: uuidv4 } = require('uuid');
 const { Router } = require('express');
 
 const router = Router();
+const postController =  require('../controllers/postController')
 
-router.get('/', (req, res) => {
-  return res.send(Object.values(req.context.models.posts));
-});
+router.get('/', postController.postsGet);
+router.get('/:postId', postController.postGet);
 
-router.get('/:postId', (req, res) => {
-  return res.send(req.context.models.posts[req.params.postId]);
-});
 
 router.post('/', (req, res) => {
   const id = uuidv4();

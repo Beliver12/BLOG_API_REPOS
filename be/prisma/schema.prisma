@@ -12,3 +12,33 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String @unique
+
+  Post Post[]
+}
+
+model Post {
+  id       Int       @id @default(autoincrement())
+  postName String
+  User     User      @relation(fields: [userId], references: [id])
+  userId   Int
+  comment  Comment[]
+}
+
+model Comment {
+  id         Int    @id @default(autoincrement())
+  authorName String
+  Post       Post?  @relation(fields: [postId], references: [id])
+  postId     Int
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String // MediumText may be needed for MySql
+  expiresAt DateTime
+}
