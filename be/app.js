@@ -129,7 +129,7 @@ app.post('/', verifyToken, (req, res) => {
  
 })
 
-app.post('/login', async (req, res)  => {
+/*app.get('/login', async (req, res)  => {
   //req.user
   const user = await prisma.user.findUnique({
     where: {
@@ -141,12 +141,16 @@ app.post('/login', async (req, res)  => {
       token
     });
   });
-  passport.authenticate("local", {
-    successRedirect: "/login",
-    failureRedirect: "/login"
-  })
-})
+})*/
 
+app.post(
+  "/login",
+  passport.authenticate("local", {
+      successRedirect: "/",
+      failureRedirect: "/",
+      failureMessage: "Incorrect password or username"
+  })
+);
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
