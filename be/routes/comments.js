@@ -9,6 +9,7 @@ router.get('/:commentId', commentController.commentGet);
   
   router.post('/', (req, res) => {
     const id = uuidv4();
+    req.user
     const comment = {
       id,
       text: req.body.text,
