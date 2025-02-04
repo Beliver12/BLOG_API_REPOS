@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const { body, validationResult } = require("express-validator");
 
-const expressSession = require('express-session');
+const session = require('express-session');
 const path = require("node:path");
 const bcrypt = require('bcrypt');
 const passport = require("passport");
@@ -31,18 +31,17 @@ const routes = require('./routes');
 const app = express();
 
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true,}));
+app.use(cors({ origin: 'http://localhost:5173', credentials: true, allowedHeaders: ['Content-Type'],}));
 app.use(express.json());
 
 app.use(
-  expressSession({
-      cookie: {
-          maxAge: 1000 * 60 * 60 * 24,
-          secure: true
-      },
-      secret: 'a santa at nasa',
-      resave: false,
-      saveUninitialized: false,
+ session({
+      secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie:{
+    maxAge: 86400000
+  },
       store: new PrismaSessionStore(
           new PrismaClient(),
           {
@@ -53,9 +52,11 @@ app.use(
       ),
   }),
 );
-app.use(passport.initialize());
 
+app.use(passport.initialize());
 app.use(passport.session());
+
+
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -129,31 +130,20 @@ app.post('/', verifyToken, (req, res) => {
  
 })
 
-/*app.get('/login', async (req, res)  => {
-  //req.user
-  const user = await prisma.user.findUnique({
-    where: {
-      username: req.body.username
-    }
-  })
-  jwt.sign({user}, 'secretkey', (err, token) => {
-    res.json({
-      token
-    });
-  });
-})*/
 
-app.post(
+
+/*app.post(
   "/login",
   passport.authenticate("local", {
       successRedirect: "/",
       failureRedirect: "/",
       failureMessage: "Incorrect password or username"
   })
-);
+);*/
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
+    
       try {
           const rows = await prisma.user.findUnique({
               where: {
@@ -176,6 +166,7 @@ passport.use(
   })
 );
 passport.serializeUser((user, done) => {
+  
   done(null, user.id);
 });
 passport.deserializeUser(async (id, done) => {
@@ -186,12 +177,29 @@ passport.deserializeUser(async (id, done) => {
           }
       })
       const user = rows;
+     
       done(null, user);
+      
   } catch (err) {
       done(err);
   }
 });
-
+app.post('/login', passport.authenticate('local'), async (req, res)  => {
+  //req.user
+  const user = await prisma.user.findUnique({
+    where: {
+      username: req.body.username
+    }
+  })
+  jwt.sign({user}, 'secretkey', (err, token) => {
+    res.json({
+      token
+    });
+  });
+})
+app.get("/a", (req, res) => {
+  console.log(req.user)
+})
 app.use('/session', routes.session);
 app.use('/users', routes.users);
 app.use('/posts', routes.posts);

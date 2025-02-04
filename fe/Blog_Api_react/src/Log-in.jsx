@@ -23,6 +23,7 @@ const LogIn = () => {
        const options = {
         method: "POST",
         body: JSON.stringify(data),
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json"
         }
@@ -34,9 +35,10 @@ const LogIn = () => {
         setUsername('')
         setPassword('')
         console.log(data);
+        //navigate('/');
         localStorage.setItem("accessToken", data.token);
-       
-       })
+        
+       }).catch((error) => console.error("Error", error))
 
        
      
