@@ -1,12 +1,13 @@
 import { useState, useEffect} from 'react'
 
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 
 const LogIn = () => {
     debugger;
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('')
     
  
     const handleSubmit  = async (event) => {
@@ -35,14 +36,17 @@ const LogIn = () => {
         setUsername('')
         setPassword('')
         console.log(data);
-        //navigate('/');
+       
         localStorage.setItem("accessToken", data.token);
-        
+        setMessage('true')
        }).catch((error) => console.error("Error", error))
 
        
      
       
+    }
+    if(message){
+        return <Navigate to="/"/>
     }
     const handleLogout = () => {
         localStorage.removeItem("accessToken");

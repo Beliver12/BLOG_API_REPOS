@@ -193,7 +193,8 @@ app.post('/login', passport.authenticate('local'), async (req, res)  => {
   })
   jwt.sign({user}, 'secretkey', (err, token) => {
     res.json({
-      token
+      token,
+      message: "true"
     });
   });
 })

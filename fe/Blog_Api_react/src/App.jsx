@@ -13,7 +13,7 @@ const App = () => {
             <Link to="signup">Signup Page</Link>
           </li>
           <li>
-            <Link to="login">Log-in Page</Link>
+            <Link to="log-in">Log-in Page</Link>
           </li>
         </ul>
       </nav>  
