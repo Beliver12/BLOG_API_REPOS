@@ -23,7 +23,7 @@ const  Signup = () => {
     }
     
     
-    const url = "http://localhost:3000/signup"
+    const url = "http://localhost:3000/users/signup"
     const options = {
         method: "POST",
         body: JSON.stringify(data),

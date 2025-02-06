@@ -4,10 +4,10 @@ require('dotenv').config()
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const { body, validationResult } = require("express-validator");
+
 
 const session = require('express-session');
-const path = require("node:path");
+
 const bcrypt = require('bcrypt');
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
@@ -23,9 +23,6 @@ opts.issuer = 'accounts.examplesoft.com';
 opts.audience = 'yoursite.net';
 
 const routes = require('./routes');
-
-
-
 
 
 const app = express();
@@ -61,9 +58,6 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-
-
-//======================>
 function verifyToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
 
@@ -79,41 +73,12 @@ function verifyToken(req, res, next) {
   }
 }
 
-app.post('/signup', async (req, res) => {
-  const user = await prisma.user.findUnique({
-    where: {
-        username: req.body.username,
-    }
-})
-
- if(req.body.password !== req.body.password2) {
-  return res.status(400).send({
-    error: "Passwords dont match."
-  })
- } else if(user) {
-  return res.status(400).send({
-    error: "Username allready in use."
-  })
- }
- 
-  console.log(req.body)
-  bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-    if(err) {
-      return next(err);
-    }
-    currentUser = req.body.username;
-    const user = await prisma.user.create({
-      data: {
-          username: req.body.username,
-          password: hashedPassword,
-      },
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173'); // Allow requests from any origin
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization', );
+  next();
   });
-  })
-  res.send({ message: 'Signup successful!' });
-});
-
-
-
 
 
 app.post('/', verifyToken, (req, res) => {
@@ -130,16 +95,6 @@ app.post('/', verifyToken, (req, res) => {
  
 })
 
-
-
-/*app.post(
-  "/login",
-  passport.authenticate("local", {
-      successRedirect: "/",
-      failureRedirect: "/",
-      failureMessage: "Incorrect password or username"
-  })
-);*/
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {

@@ -24,9 +24,13 @@ const LogIn = () => {
        const options = {
         method: "POST",
         body: JSON.stringify(data),
-        credentials: 'include',
+        credentials: 'same-origin',
+        withCredentials: true,
+      
         headers: {
-            "Content-Type": "application/json"
+            'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    
         }
        }
      
