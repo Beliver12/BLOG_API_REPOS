@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react'
-import { useOutletContext } from "react-router-dom";
+import { data, useOutletContext } from "react-router-dom";
 
 import { Link, Navigate } from "react-router-dom";
 
@@ -9,6 +9,7 @@ const LogIn = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const {message, setMessage} = useOutletContext();
+    const [isLogedIn, setIsLogedIn] = useState('')
     const [error, setError] = useState('');
  
     const handleSubmit  = async (event) => {
@@ -45,6 +46,7 @@ const LogIn = () => {
         localStorage.setItem("accessToken", data.token);
         if(data.message){
         setMessage('true')
+        setIsLogedIn('true')
         } else {
             setError(data.error)
         } 
@@ -55,7 +57,7 @@ const LogIn = () => {
      
       
     }
-    if(message){
+    if(isLogedIn){
         return <Navigate to="/"/>
     }
     const handleLogout = () => {

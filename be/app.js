@@ -82,12 +82,9 @@ app.post('/', verifyToken, (req, res) => {
 
 
 app.get('/log-out', (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-        return next(err);
-    }
+  
     res.send({message:'loged out'});
-});
+
 })
 
 app.post('/login',  async (req, res)  => {
