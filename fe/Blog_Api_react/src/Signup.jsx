@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react'
-
+import { useOutletContext } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 
@@ -46,16 +46,8 @@ const  Signup = () => {
     return (
         <>
         <div className='signup'>
-            
-            <nav>
-            <h1>Signup</h1>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-        
-        </ul>
-        </nav>
+        <h1>Signup</h1>
+           
             <form onSubmit={handleSubmit} method='POST' >
                 <p>{error}</p>
             <input type="text"  name='username' value={username} onChange={(e) => setUsername(e.target.value)} required/> 
@@ -63,7 +55,15 @@ const  Signup = () => {
             <input type="password"  name="password2" id="" value={password2} onChange={(e) => setPassword2(e.target.value)} required/>
         <button type='submit'>Sign up</button>
             </form>
-         
+            <nav>
+           
+           <ul>
+             <li>
+               <Link to="/">Home</Link>
+             </li>
+           
+           </ul>
+           </nav>
         </div>
         </>
     )

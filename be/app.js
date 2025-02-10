@@ -6,12 +6,8 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 
 
-const session = require('express-session');
-
 const bcrypt = require('bcrypt');
 const passport = require("passport");
-const LocalStrategy = require('passport-local').Strategy;
-const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const JwtStrategy = require('passport-jwt').Strategy,
@@ -28,30 +24,11 @@ const routes = require('./routes');
 const app = express();
 
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true, allowedHeaders: ['Content-Type'],}));
+app.use(cors({ origin: 'http://localhost:5173', credentials: true,  optionsSuccessStatus: 200 , allowedHeaders: ['Content-Type'],}));
 app.use(express.json());
 
-app.use(
- session({
-      secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: false,
-  cookie:{
-    maxAge: 86400000
-  },
-      store: new PrismaSessionStore(
-          new PrismaClient(),
-          {
-              checkPeriod: 2 * 60 * 1000, // ms
-              dbRecordIdIsSessionId: true,
-              dbRecordIdFunction: undefined,
-          },
-      ),
-  }),
-);
 
 app.use(passport.initialize());
-app.use(passport.session());
 
 
 app.use(bodyParser.json());
@@ -59,30 +36,38 @@ app.use(express.urlencoded({ extended: true }));
 
 
 function verifyToken(req, res, next) {
-  const bearerHeader = req.headers['authorization'];
+  const bearerHeader = req.body.accessToken;
 
-  if(typeof bearerHeader !== 'undefined') {
+  if(typeof bearerHeader !== 'undefined' && bearerHeader !== null) {
     const bearer = bearerHeader.split(' ');
 
-    const bearerToken = bearer[1];
+    const bearerToken = bearer[0];
 
     req.token = bearerToken;
+    jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      if(err) return res.sendStatus(403)
+        req.user = user
+      next()
+    })
     next();
   } else {
     res.sendStatus(403);
   }
 }
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173'); // Allow requests from any origin
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization', );
-  next();
-  });
+app.use(function(req, res, next) {
+  res.header('Content-Type', 'application/json;charset=UTF-8')
+  res.header('Access-Control-Allow-Credentials', true)
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  )
+  next()
+})
 
 
 app.post('/', verifyToken, (req, res) => {
-  jwt.verify(req.token, 'secretkey', (err, authData) => {
+  jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, authData) => {
    if(err) {
      res.sendStatus(403);
    } else {
@@ -96,66 +81,39 @@ app.post('/', verifyToken, (req, res) => {
 })
 
 
-passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    
-      try {
-          const rows = await prisma.user.findUnique({
-              where: {
-                  username: username
-              }
-          })
-          const user = rows;
-          if (!user) {
-              return done(null, false, { message: "Incorrect username" });
-          }
-          const match = await bcrypt.compare(password, user.password);
-          if (!match) {
-              // passwords do not match!
-              return done(null, false, { message: "Incorrect password" })
-          }
-          return done(null, user);
-      } catch (err) {
-          return done(err);
-      }
-  })
-);
-passport.serializeUser((user, done) => {
-  
-  done(null, user.id);
+app.get('/log-out', (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+        return next(err);
+    }
+    res.send({message:'loged out'});
 });
-passport.deserializeUser(async (id, done) => {
-  try {
-      const rows = await prisma.user.findUnique({
-          where: {
-              id: id
-          }
-      })
-      const user = rows;
-     
-      done(null, user);
-      
-  } catch (err) {
-      done(err);
-  }
-});
-app.post('/login', passport.authenticate('local'), async (req, res)  => {
+})
+
+app.post('/login',  async (req, res)  => {
   //req.user
   const user = await prisma.user.findUnique({
     where: {
       username: req.body.username
     }
   })
-  jwt.sign({user}, 'secretkey', (err, token) => {
+  if (!user) {
+    return res.status(400).send({error: "Incorrect username"});
+   }
+   const match = await bcrypt.compare(req.body.password, user.password);
+   if (!match) {
+       return res.status(400).send({error: "Incorrect password"});
+   }
+  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+  jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '3600s'}, (err, token) => {
     res.json({
       token,
+      refreshToken,
       message: "true"
     });
   });
 })
-app.get("/a", (req, res) => {
-  console.log(req.user)
-})
+
 app.use('/session', routes.session);
 app.use('/users', routes.users);
 app.use('/posts', routes.posts);

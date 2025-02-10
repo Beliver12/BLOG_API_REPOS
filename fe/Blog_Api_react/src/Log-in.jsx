@@ -1,4 +1,5 @@
 import { useState, useEffect} from 'react'
+import { useOutletContext } from "react-router-dom";
 
 import { Link, Navigate } from "react-router-dom";
 
@@ -7,8 +8,8 @@ const LogIn = () => {
     debugger;
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('')
-    
+    const {message, setMessage} = useOutletContext();
+    const [error, setError] = useState('');
  
     const handleSubmit  = async (event) => {
         debugger;
@@ -24,7 +25,7 @@ const LogIn = () => {
        const options = {
         method: "POST",
         body: JSON.stringify(data),
-        credentials: 'same-origin',
+        credentials: 'include',
         withCredentials: true,
       
         headers: {
@@ -42,7 +43,12 @@ const LogIn = () => {
         console.log(data);
        
         localStorage.setItem("accessToken", data.token);
+        if(data.message){
         setMessage('true')
+        } else {
+            setError(data.error)
+        } 
+        
        }).catch((error) => console.error("Error", error))
 
        
@@ -53,6 +59,11 @@ const LogIn = () => {
         return <Navigate to="/"/>
     }
     const handleLogout = () => {
+        fetch("http://localhost:3000/log-out")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+        })
         localStorage.removeItem("accessToken");
        }
     return (
@@ -61,6 +72,7 @@ const LogIn = () => {
             <h1>Log-in</h1>
 
             <form onSubmit={handleSubmit} method='POST' >
+                <p>{error}</p>
                 <input type="text"  name='username' value={username} onChange={(e) => setUsername(e.target.value)}/> 
                 <input type="password"  name="password" id="" value={password} onChange={(e) => setPassword(e.target.value)}/>
         
