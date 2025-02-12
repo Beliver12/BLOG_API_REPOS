@@ -116,8 +116,8 @@ app.use('/users', routes.users);
 app.use('/posts', routes.posts);
 app.use('/comments', routes.comments);
 
-
-app.listen(process.env.PORT, () =>
-    console.log(`Example app listening on port ${process.env.PORT}!`),
+const PORT = 8080;
+app.listen(PORT, () =>
+    console.log(`Example app listening on port ${PORT}!`),
   );
 
