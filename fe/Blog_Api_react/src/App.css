@@ -1,8 +1,12 @@
 #root {
   display: grid;
   height: 100vh;
-  width: 100vw;
+  width: 99vw;
   grid-template-rows: 120px 1fr;
+}
+
+body {
+  width: 99vw;
 }
 
 nav {
@@ -11,7 +15,7 @@ nav {
   justify-content: space-between;
   ul{
     display: flex;
-    width: 280px;
+    width: 480px;
     margin: 0;
     align-items: center;
     justify-content: space-between;   
@@ -19,7 +23,19 @@ nav {
 }
 
 .main, form{
-  height: 100vh;
-  width: 100vw;
+  height: 99vh;
+  width: 99vw;
   text-align: center;
+}
+
+#createPost{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  div{
+    width: 200px;
+    display: flex;
+    
+  }
 }

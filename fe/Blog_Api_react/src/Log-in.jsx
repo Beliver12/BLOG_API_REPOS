@@ -45,7 +45,7 @@ const LogIn = () => {
        
         localStorage.setItem("accessToken", data.token);
         if(data.message){
-        setMessage('true')
+        setMessage(data.token)
         setIsLogedIn('true')
         } else {
             setError(data.error)
@@ -60,35 +60,21 @@ const LogIn = () => {
     if(isLogedIn){
         return <Navigate to="/"/>
     }
-    const handleLogout = () => {
-        fetch("http://localhost:3000/log-out")
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-        })
-        localStorage.removeItem("accessToken");
-       }
     return (
         <>
         <div className='log-in'>
+        <Link to="/">Home</Link>
             <h1>Log-in</h1>
 
             <form onSubmit={handleSubmit} method='POST' >
                 <p>{error}</p>
-                <input type="text"  name='username' value={username} onChange={(e) => setUsername(e.target.value)}/> 
-                <input type="password"  name="password" id="" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <input placeholder='username' type="text" id='username' name='username' value={username} onChange={(e) => setUsername(e.target.value)}/> 
+                <input placeholder='password' type="password"  name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
         
         <button type='submit'>Log-in</button>
         
             </form>
-            <button onClick={handleLogout}>Log-out</button>
-            <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-        </ul>
-        </nav>
+      
         </div>
         </>
     )

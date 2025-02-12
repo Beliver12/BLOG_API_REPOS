@@ -4,36 +4,47 @@ import { Outlet } from "react-router-dom";
 import './App.css'
 debugger;
 
-const LinkForLogIn = ({message, onClick}) => {
- 
+const LinkForLogIn = ({message, setMessage}) => {
   if(message) {
-    return  <button onClick={onClick}>Log-out</button>
-    
+    return  <button onClick={()=> setMessage('')}>Log-out</button>
   }
   return  <li><Link to="log-in">Log-in Page</Link></li>
 }
 
-const App = () => {
-  const handleLogout = () => {
-    fetch("http://localhost:3000/log-out")
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-    })
-    localStorage.removeItem("accessToken");
-   }
+const LinkForSignUp = ({message}) => {
+  if(message) {
+    return  
+  }
+  return  <li><Link to="signup">Signup Page</Link></li>
+}
 
-  const [message, setMessage] = useState('')
+const LinkForCreatingPost = ({message}) => {
+  if(message) {
+    return  <li><Link to="create-post">Create-post</Link></li>
+  }
+  return
+}
+
+const App = () => {
+  const token = localStorage.getItem("accessToken")
+  const [message, setMessage] = useState(token)
+  if(message === '') {
+    fetch("http://localhost:3000/log-out")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+        })
+        localStorage.removeItem("accessToken");
+        
+  }
   return (
     <div>
       <nav>
         <h1>MY-BLOG</h1>
-        <ul>
-        
-          <li>
-            <Link to="signup">Signup Page</Link>
-          </li>
-          <LinkForLogIn onClick={handleLogout} message={message}/>
+        <ul> 
+          <LinkForSignUp message={message}/>
+          <LinkForLogIn setMessage={setMessage} message={message}/>
+          <LinkForCreatingPost message={message}/>
         </ul>
       </nav>  
       <div className='main'>
