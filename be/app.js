@@ -23,8 +23,21 @@ const routes = require('./routes');
 
 const app = express();
 
+const allowedOrigins = [
+  "https://blog-api-repos-g14o.vercel.app", 
+  "https://blog-api-repos-g14o-l9vlkg56e-beliver12s-projects.vercel.app"
+];
 
-app.use(cors({ origin: 'https://blog-api-repos-g14o.vercel.app', credentials: true,  optionsSuccessStatus: 200 , allowedHeaders: ['Content-Type'],}));
+app.use(cors({
+  origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+      } else {
+          callback(new Error("Not allowed by CORS"));
+      }
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 
