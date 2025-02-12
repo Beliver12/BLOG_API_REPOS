@@ -21,7 +21,7 @@ const LogIn = () => {
         username: username
        }
 
-       const url = "https://blogapi-staging.up.railway.app//login"
+       const url = "https://blogapi-staging.up.railway.app/login"
        
        const options = {
         method: "POST",
