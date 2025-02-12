@@ -29,7 +29,7 @@ const App = () => {
   const token = localStorage.getItem("accessToken")
   const [message, setMessage] = useState(token)
   if(message === '') {
-    fetch("http://localhost:3000/log-out")
+    fetch("http://localhost:8080/log-out")
         .then(response => response.json())
         .then(data => {
             console.log(data)

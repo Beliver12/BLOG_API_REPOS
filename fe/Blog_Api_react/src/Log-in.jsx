@@ -21,7 +21,7 @@ const LogIn = () => {
         username: username
        }
 
-       const url = "http://localhost:3000/login"
+       const url = "http://localhost:8080/login"
        
        const options = {
         method: "POST",

@@ -26,7 +26,7 @@ const CreatePost = () => {
             accessToken: accessToken
         }
 
-        const url = "http://localhost:3000/posts/create"
+        const url = "http://localhost:8080/posts/create"
         const options = {
             method: "POST",
             body: JSON.stringify(data),
