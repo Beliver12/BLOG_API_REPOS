@@ -2,20 +2,25 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 exports.commentsGet = async (req, res) => {
+    const id = Number(req.body.id)
     const comments = await prisma.comment.findMany({
-        where: {
-            authorName: 'comment'
-        }
-    })
-    return res.send(comments[0]);
+        orderBy: [
+          {
+           id: 'asc'
+          }
+       ],
+      })
+      return res.send(comments);
 }
 
-exports.commentGet = async (req, res) => {
-    const id = Number(req.params.commentId);
-    const comment = await prisma.comment.findUnique({
-        where: {
-            id: id
+exports.commentsPost = async (req, res) => {
+    const id = Number(req.body.id)
+    await prisma.comment.create({
+        data: {
+            commentText: req.body.text,
+            authorName: req.body.authorName,
+            postId:  id
         }
-    })
-    return res.send(comment)
+      })
+      return res.send({message: 'comment created'});
 }

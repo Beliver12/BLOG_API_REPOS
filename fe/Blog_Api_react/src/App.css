@@ -39,3 +39,11 @@ nav {
     
   }
 }
+ul{
+  list-style-type: none;
+}
+.my-posts, .posts{
+  ul > li, .comments{
+    border: 1px solid black;
+  }
+}

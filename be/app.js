@@ -23,6 +23,8 @@ const routes = require('./routes');
 
 const app = express();
 
+//when deploying change back to this code :
+
 const allowedOrigins = [
   "https://blog-api-repos-g14o.vercel.app", 
   "https://blog-api-repos-g14o-l9vlkg56e-beliver12s-projects.vercel.app"
@@ -38,6 +40,7 @@ app.use(cors({
   },
   credentials: true
 }));
+app.use(cors({ origin: 'http://localhost:5173', credentials: true,  optionsSuccessStatus: 200 , allowedHeaders: ['Content-Type'],}));
 app.use(express.json());
 
 
@@ -134,3 +137,4 @@ app.listen(PORT, () =>
     console.log(`Example app listening on port ${PORT}!`),
   );
 
+module.exports = {verifyToken}

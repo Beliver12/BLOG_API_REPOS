@@ -3,32 +3,72 @@ import { data, useOutletContext } from "react-router-dom";
 
 import { Link, Navigate } from "react-router-dom";
 
-const CreatePost = () => {
-    debugger;
+const EditPost = () => {
     const [postname, setPostname] = useState('');
     const [text, setText] = useState('');
-    const [publish, setPublish] = useState(false);
+    const [publish, setPublish] = useState('');
     const [isExpired, setIsExpired] = useState('')
     const {message, setMessage} = useOutletContext();
     const [isLogedIn, setIsLogedIn] = useState('')
     const checkHandler = () => {
         setPublish(!publish)
     }
+    useEffect(() => {
+           
+        const accessToken = localStorage.getItem("accessToken")
+        const id = localStorage.getItem("postId")
+            const data = {
+                accessToken: accessToken,
+                id: id,
+            }
+    
+            const url = "https://blogapi-staging.up.railway.app/posts/post"
+            const options = {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+    
+            fetch(url, options)
+            .then(res => res.json())
+            .then((data) => {
+                console.log(data)
+                if(data.message === "jwt expired") {
+                    localStorage.removeItem("accessToken")
+                    setIsExpired('true')
+                    setMessage('')
+                } else {
+                    //setPost(data)
+                    if(data.published === 'true') {
+                        setPublish(true)
+                    } else {
+                        setPublish(false)
+                    }                   
+                    setPostname(data.postName)
+                    setText(data.postText)
+                    
+                }
+            }).catch((error) => console.error("Error", error))
+      },[]);
 
-    const handleSubmit = async (event) => {
+      const handleSubmit = async (event) => {
         debugger;
         event.preventDefault();
     const accessToken = localStorage.getItem("accessToken")
+    const id = localStorage.getItem("postId")
         const data = {
+            id: id,
             postname: postname,
             text: text,
             publish: publish,
             accessToken: accessToken
         }
 
-        const url = "https://blogapi-staging.up.railway.app/posts/create"
+        const url = "https://blogapi-staging.up.railway.app/posts/edit"
         const options = {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
@@ -61,13 +101,14 @@ const CreatePost = () => {
     }
     const token = localStorage.getItem("accessToken")
     if(!token) {
+        alert('Your Token is expired pls log-in again')
         return <Navigate to="/"/>
     }
-    return (
+
+      return (
         <>
-        <div className='create-post'>
-        <Link to="/">Home</Link>
-            <h1>Create-post</h1>
+        <div className='edit-post'>
+            <h1>Edit-post</h1>
 
             <form onSubmit={handleSubmit} id='createPost' method='POST' >
                 <label htmlFor="postname">Post-name</label>
@@ -87,4 +128,4 @@ const CreatePost = () => {
     )
 }
 
-export default CreatePost
+export default EditPost

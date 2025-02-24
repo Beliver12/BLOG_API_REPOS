@@ -21,7 +21,7 @@ const LogIn = () => {
         username: username
        }
 
-       const url = "https://blogapi-staging.up.railway.app/login"
+       const url = "https://blogapi-staging.up.railway.app/login" //when deeploying change url, to Railway live url.
        
        const options = {
         method: "POST",
@@ -63,7 +63,7 @@ const LogIn = () => {
     return (
         <>
         <div className='log-in'>
-        <Link to="/">Home</Link>
+        
             <h1>Log-in</h1>
 
             <form onSubmit={handleSubmit} method='POST' >

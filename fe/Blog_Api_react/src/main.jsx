@@ -6,7 +6,10 @@ import Signup from './Signup.jsx'
 import App from './App.jsx'
 import LogIn from './Log-in.jsx';
 import CreatePost from './CreatePost.jsx';
-
+import Posts from './Posts.jsx';
+import MyPosts from './MyPosts.jsx';
+import EditPost from './EditPost.jsx';
+import CommentPost from './CommentPost.jsx';
 const router = createBrowserRouter([
  {
   path: "/",
@@ -14,29 +17,18 @@ const router = createBrowserRouter([
   children: [
     { path: "signup", element: <Signup /> },
     { path: "log-in", element: <LogIn /> },
-    { path: "create-post", element: <CreatePost /> }
+    { path: "create-post", element: <CreatePost /> },
+    { path: "posts", element: <Posts /> },
+    { path: "myposts", element: <MyPosts /> },
+    { path: "edit-post", element: <EditPost/> },
+    { path: "comment-post", element: <CommentPost/> }
   ],
  },
-/* {
-  path: "/:log-in",
-  element: <LogIn/>
- },
- {
-  path: "/:signup",
-  element: <Signup/>
- }*/
- /* {
-    path: "signup",
-    element: <Signup/>
-  },
-  {
-    path: "log-in",
-    element: <LogIn/>
-  }*/
+
 ]);
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  
     <RouterProvider router={router}/>
-  </StrictMode>,
+ 
 )
