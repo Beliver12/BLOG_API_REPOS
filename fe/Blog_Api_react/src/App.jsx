@@ -68,7 +68,7 @@ const App = () => {
           <LinkForSignUp message={message}/>          
           <LinkForCreatingPost message={message}/>
           <LinkForCheckingYourOwnPost message={message}/>
-          {message?  <img src="../public//icons8-user-24.png" alt="" />  : ''}
+          {message?  <img src="..//icons8-user-24.png" alt="" />  : ''}
           {message?  <h3>{message}</h3>  : ''}
           <LinkForLogIn setMessage={setMessage} message={message}/>         
         </ul>
