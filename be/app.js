@@ -27,7 +27,7 @@ const app = express();
 
 const allowedOrigins = [
   "https://blog-api-repos-y592.vercel.app", 
-  "https://blog-api-repos-g14o-l9vlkg56e-beliver12s-projects.vercel.app"
+  "https://blog-api-repos-y592-kc3ueetfs-beliver12s-projects.vercel.app"
 ];
 
 app.use(cors({
