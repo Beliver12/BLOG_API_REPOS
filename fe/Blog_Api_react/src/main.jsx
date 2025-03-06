@@ -10,6 +10,8 @@ import Posts from './Posts.jsx';
 import MyPosts from './MyPosts.jsx';
 import EditPost from './EditPost.jsx';
 import CommentPost from './CommentPost.jsx';
+import EditComment from './EditComment.jsx';
+import Post from './Post.jsx';
 const router = createBrowserRouter([
  {
   path: "/",
@@ -21,7 +23,9 @@ const router = createBrowserRouter([
     { path: "posts", element: <Posts /> },
     { path: "myposts", element: <MyPosts /> },
     { path: "edit-post", element: <EditPost/> },
-    { path: "comment-post", element: <CommentPost/> }
+    { path: "comment-post", element: <CommentPost/> },
+    { path: "edit-comment", element: <EditComment/> },
+    { path: "post", element: <Post/> }
   ],
  },
 

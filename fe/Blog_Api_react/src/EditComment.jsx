@@ -3,22 +3,51 @@ import { data, useOutletContext } from "react-router-dom";
 
 import { Link, Navigate } from "react-router-dom";
 
-const CommentPost = () => {
-    debugger;
+const EditComment = () => {
     const [authorName, setAuthor] = useState('');
     const [text, setText] = useState('');
-    const [comment, setComment] = useState('')
-    const {message, setMessage} = useOutletContext();
     const [isExpired, setIsExpired] = useState('')
-    const token = localStorage.getItem("accessToken")
-    if(!token) {
-        return <Navigate to="/"/>
-    }
+    const {message, setMessage} = useOutletContext();
+    const [isLogedIn, setIsLogedIn] = useState('')
+   
+    useEffect(() => {
+           
+        const accessToken = localStorage.getItem("accessToken")
+        const id = localStorage.getItem("postId")
+            const data = {
+                accessToken: accessToken,
+                id: id,
+            }
+    
+            const url = "https://blogapi-staging.up.railway.app/comments/comment"
+            const options = {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+            fetch(url, options)
+            .then(res => res.json())
+            .then((data) => {
+                console.log(data)
+                if(data.message === "jwt expired") {
+                    localStorage.removeItem("accessToken")
+                    setIsExpired('true')
+                    setMessage('')
+                }  else {                 
+                    setAuthor(data.authorName)
+                    setText(data.commentText)
+                    
+                }
+            }).catch((error) => console.error("Error", error))
+      },[]);
+
       const handleSubmit = async (event) => {
         debugger;
         event.preventDefault();
-    const id = localStorage.getItem("postId")
     const accessToken = localStorage.getItem("accessToken")
+    const id = localStorage.getItem("postId")
         const data = {
             id: id,
             authorName: authorName,
@@ -26,9 +55,9 @@ const CommentPost = () => {
             accessToken: accessToken
         }
 
-        const url = "https://blogapi-staging.up.railway.app/comments/create"
+        const url = "https://blogapi-staging.up.railway.app/comments/edit"
         const options = {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
@@ -41,35 +70,34 @@ const CommentPost = () => {
             setAuthor('')
             setText('')
             console.log(data)
-            //setComment(data.message)
             if(data.message === "jwt expired") {
                 localStorage.removeItem("accessToken")
                 setIsExpired('true')
-                alert('Your Token is expired pls log-in again')
                 setMessage('')
             } else {
                 setMessage(data.user.user.username)
-               // setIsLogedIn('true')
-                setComment(data.message)
+                setIsLogedIn('true')
                 localStorage.removeItem("postId")
             }
         }).catch((error) => console.error("Error", error))
     }
-    if(comment) {
-        return <Navigate to="/post"/>
-    }
-
     if(isExpired) {
         alert('Your Token is expired pls log-in again')
         return <Navigate to="/"/>
     }
+    if(isLogedIn) {
+        return <Navigate to="/post"/>
+    }
+    const token = localStorage.getItem("accessToken")
+    if(!token) {
+        alert('Your are loged-out')
+        return <Navigate to="/"/>
+    }
 
-   
-
-      return (
+    return (
         <>
-        <div className='comment-post'>
-            <h1>Comment-post</h1>
+        <div className='edit-comment'>
+            <h1>Comment-edit</h1>
 
             <form onSubmit={handleSubmit} id='createPost' method='POST' >
                 <label htmlFor="postname">Author-name</label>
@@ -85,4 +113,4 @@ const CommentPost = () => {
     )
 }
 
-export default CommentPost
+export default EditComment

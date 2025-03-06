@@ -26,7 +26,7 @@ const app = express();
 //when deploying change back to this code :
 
 const allowedOrigins = [
-  "https://blog-api-repos-y592.vercel.app", 
+  "https://blog-api-repos-g14o.vercel.app", 
   "https://blog-api-repos-g14o-l9vlkg56e-beliver12s-projects.vercel.app"
 ];
 
@@ -40,8 +40,7 @@ app.use(cors({
   },
   credentials: true
 }));
-//app.use(cors({ origin: 'http://localhost:5173', credentials: true,  optionsSuccessStatus: 200 , allowedHeaders: ['Content-Type'],}));
-app.use(cors({ origin: 'https://blog-api-repos-y592.vercel.app', credentials: true,  optionsSuccessStatus: 200 , allowedHeaders: ['Content-Type'],}));
+app.use(cors({ origin: 'http://localhost:5173', credentials: true,  optionsSuccessStatus: 200 , allowedHeaders: ['Content-Type'],}));
 app.use(express.json());
 
 
@@ -121,6 +120,7 @@ app.post('/login',  async (req, res)  => {
   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
   jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '3600s'}, (err, token) => {
     res.json({
+      user,
       token,
       refreshToken,
       message: "true"

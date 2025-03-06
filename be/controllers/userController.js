@@ -3,14 +3,43 @@ const prisma = new PrismaClient();
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
-exports.usersGet = async (req, res) => {
-    const users = await prisma.user.findMany({
-        where : {
-          username: 'Nikola'
+exports.verifyToken = (req, res, next) => {
+  const bearerHeader = req.body.accessToken;
+
+  if(typeof bearerHeader !== 'undefined' && bearerHeader !== null) {
+    const bearer = bearerHeader.split(' ');
+
+    const bearerToken = bearer[0];
+
+    req.token = bearerToken;
+    jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      if(err) {
+        console.log(err)
+      }else  {
+        req.user = user
         }
-       })
+      next()
+    })
+   // next();
+  } else {
+    return res.send({message: "jwt expired"})
+  }
+}
+
+exports.logedInGet = async (req, res) => {
+  const users = await prisma.user.findUnique({
+    where: {
+      id: req.user.user.id
+    }
+  })
+     console.log(users)
+      return res.send(users);
+}
+
+exports.usersGet = async (req, res) => {
+    const users = await prisma.user.findMany({})
        console.log(users)
-        return res.send(users[0]);
+        return res.send(users);
 }
 
 exports.userGet = async (req, res) => {

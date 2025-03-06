@@ -1,31 +1,149 @@
 #root {
   display: grid;
   height: 100vh;
-  width: 99vw;
+  width: 100%;
   grid-template-rows: 120px 1fr;
+  grid-template-columns: minmax(100px, 550fr) 1fr;
+  position:fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
 }
+
+
+@media (max-width: 1100px){
+  nav {
+   h1{
+    font-size: 30px;
+   }
+  
+  }
+}
+
+
+@media (max-width: 965px){
+  nav {
+   h1{
+    font-size: 20px;
+   }
+   ul{
+    font-size: 15px; 
+    width: 200px;
+    button{
+      font-size: 8px; 
+      width: 60px;
+    }
+  }
+  }
+}
+
+@media (max-width: 818px){
+  nav {
+   h1{
+    font-size: 15px;
+   }
+   ul{
+    font-size: 10px; 
+    width: 200px;
+  }
+  button{
+    font-size: 6px; 
+    width: 50px;
+  }
+  h3{
+    font-size: 10px;
+  }
+  }
+}
+
+
+@media (max-width: 633px){
+  nav {
+   h1{
+    font-size: 12px;
+   }
+   ul{
+    font-size: 6px; 
+    width: 200px;
+    img{
+      width: 13px;
+    }
+    button{
+      font-size: 6px; 
+      width: 40px;
+    }
+    h3{
+      font-size: 8px;
+    }
+  }
+  }
+}
+
+
+@media (max-width: 474px){
+  nav {
+   h1{
+    font-size: 8px;
+   }
+   ul{
+    font-size: 4px; 
+    width: 200px;
+    img{
+      width: 10px;
+    }
+    button{
+      font-size: 3px; 
+      width: 20px;
+    }
+    h3{
+      font-size: 6px;
+    }
+  }
+  }
+}
+
+
 
 body {
-  width: 99vw;
-}
+  width: 99%;
+  height: 100%;
+  position:fixed;
 
+  
+}
+.navbar{
+  width: 99%;
+  border-bottom: 1px solid black;
+}
 nav {
   grid-row: 1/2;
   display: flex;
   justify-content: space-between;
+  width: 100%;
   ul{
     display: flex;
-    width: 480px;
+    width: 75%;
     margin: 0;
     align-items: center;
-    justify-content: space-between;   
+    justify-content: flex-end;
+    *{
+      margin: 10px;
+    }
   }
 }
+
 
 .main, form{
   height: 99vh;
   width: 99vw;
   text-align: center;
+  position: relative;
+}
+
+.my-posts, .post, .posts{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #createPost{
@@ -42,8 +160,54 @@ nav {
 ul{
   list-style-type: none;
 }
-.my-posts, .posts{
-  ul > li, .comments{
+.my-posts, .posts, .post{
+  ul > li{
     border: 1px solid black;
+    word-wrap: break-word;
+  }
+  ul > li {
+    .comments{
+      border-top: 1px solid black;
+      margin-top: 20px;
+    border-bottom: 1px solid black;
+    word-wrap: break-word;
+    }
   }
 }
+h3{
+  color:  red;
+}
+.my-posts, .post{
+  button{
+    height: 40px;
+    margin-left: 5px;
+    margin-top: 5px;
+    font-size: 15px;
+  }
+  ul > li{
+    border: 1px solid black;
+    overflow-y: auto;
+    height: 500px;
+  }
+}
+
+
+.Languages{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+/*posts*/
+.posts, .my-posts, .post{
+  width: 100vw;
+  ul{
+    display: grid;
+    width: 80%;
+    gap: 40px;
+    grid-template-columns: minmax(100px, 1fr) 1fr;
+    grid-template-rows: 200px, 200px;
+    padding: 0;
+  }
+}
+

@@ -9,6 +9,8 @@ const MyPosts  = () => {
         const [isExpired, setIsExpired] = useState('')
         const {message, setMessage} = useOutletContext();
         const [postId, setPostId] = useState('');
+        const [comments, setComments] = useState('');
+        const [postStatus, setPostStatus] = useState('')
         useEffect(() => {
            
             const accessToken = localStorage.getItem("accessToken")
@@ -35,10 +37,33 @@ const MyPosts  = () => {
                         setMessage('')
                     } else {
                         setPosts(data)
-                        
+                        if(data.length < 1) {
+                            setPostStatus(false)
+                          } else {
+                            setPostStatus(true)
+                          }
                     }
                 }).catch((error) => console.error("Error", error))
           },[]);
+
+              
+    useEffect(() => {
+        const url2 = "https://blogapi-staging.up.railway.app/comments"
+        fetch(url2)
+      .then(function (response) {
+        return response.json();
+      }).then(function (response) {
+        console.log(response)
+        const formatDate = (date = new Date()) => {
+            return new Date().toISOString().split('T')[0];
+          }
+        for(let i = 0; i < response.length; i++) {
+            response[i].date = formatDate(response[i].date)
+        }
+        setComments(response)
+        
+      })
+      },[]);
 
           //Handle Edit
           const handleEdit = async (event) => {
@@ -91,7 +116,7 @@ const MyPosts  = () => {
                 accessToken: accessToken,
                 id: event.currentTarget.value
             }
-            const url = "https://blogapi-staging.up.railway.app/posts/publish"
+            const url = "http://localhost:8080/posts/publish"
             const options = {
                 method: "PUT",
                 body: JSON.stringify(data),
@@ -115,7 +140,40 @@ const MyPosts  = () => {
             }
         }).catch((error) => console.error("Error", error))
          }
-//
+//handle Delete 
+const handleDelete2 = async (event) => {
+    debugger;
+    event.preventDefault();
+    const accessToken = localStorage.getItem("accessToken")
+    const  data = {
+        accessToken: accessToken,
+        id: event.currentTarget.value
+    }
+    const url = "https://blogapi-staging.up.railway.app/comments/mypostsdelete"
+    const options = {
+        method: "DELETE",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+
+    fetch(url, options)
+.then(res => res.json())
+.then((data) => {
+    console.log(data)
+
+    if(data.message === "jwt expired") {
+        localStorage.removeItem("accessToken")
+        setIsExpired('true')
+        setMessage('')
+    }else {
+        setComments(data)
+        
+    }
+}).catch((error) => console.error("Error", error))
+ }
+ //
          if(isExpired) {
             alert('Your Token is expired pls log-in again')
             return <Navigate to="/"/>
@@ -134,6 +192,7 @@ const MyPosts  = () => {
         <>
       
             <h1>Posts</h1>
+            {postStatus === false ? <h3>You have no Posts, Create some by clicking  Create-post in top right corner </h3> : ''} 
             <div className='my-posts'>
           <ul>
           {posts.length > 0 && posts.map(post => 
@@ -152,7 +211,18 @@ const MyPosts  = () => {
                </div>
               }
               <button value={post.id} onClick={handleDelete}>Delete</button>
-              <button value={post.id} onClick={handleEdit}>Edit</button>
+              <button value={post.id} onClick={handleEdit}>Edit</button><br></br>
+              <label htmlFor=""><strong>Comments:</strong></label>
+              {comments.length > 0 && comments.map(comment => 
+            
+            comment.postId === post.id ? <div key={comment.id} className='comments'>
+            
+             <p>{comment.commentText}</p>
+            <p><strong>BY: {comment.authorName}</strong></p>
+            <button value={comment.id} onClick={handleDelete2}>Delete</button>
+              </div>: '' 
+           
+           )}
                 </li>
           )}
            

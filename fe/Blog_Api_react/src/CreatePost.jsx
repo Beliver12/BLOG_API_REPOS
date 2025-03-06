@@ -47,7 +47,7 @@ const CreatePost = () => {
                 setIsExpired('true')
                 setMessage('')
             } else {
-                setMessage(data.token)
+                setMessage(data.user.user.username)
                 setIsLogedIn('true')
             }
         }).catch((error) => console.error("Error", error))

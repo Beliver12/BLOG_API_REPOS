@@ -44,8 +44,9 @@ const LogIn = () => {
         console.log(data);
        
         localStorage.setItem("accessToken", data.token);
+        localStorage.setItem("user", data.user.username)
         if(data.message){
-        setMessage(data.token)
+        setMessage(data.user.username)
         setIsLogedIn('true')
         } else {
             setError(data.error)

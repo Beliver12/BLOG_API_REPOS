@@ -19,6 +19,7 @@ model User {
   password String @unique
 
   Post Post[]
+  comment  Comment[]
 }
 
 model Post {
@@ -26,6 +27,7 @@ model Post {
   postName String
   postText String
   published String
+  createdBy String
   date     DateTime @default(now())
   User     User      @relation(fields: [userId], references: [id])
   userId   Int
@@ -39,6 +41,8 @@ model Comment {
   commentText String
   Post       Post?  @relation(fields: [postId], references: [id])
   postId     Int
+  User     User      @relation(fields: [userId], references: [id])
+  userId   Int
 }
 
 model Session {

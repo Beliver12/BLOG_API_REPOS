@@ -2,23 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 
-exports.postsGet = async (req, res) => {
-   
-    const posts = await prisma.post.findMany({
-      orderBy: [
-        {
-         id: 'asc'
-        }
-     ],
-      where: {      
-            published: 'true'
-        }
-    })
-    return res.send(posts);
-}
-
-exports.postGet = async (req, res) => {
-   
+ exports.verifyToken = (req, res, next) => {
   const bearerHeader = req.body.accessToken;
 
   if(typeof bearerHeader !== 'undefined' && bearerHeader !== null) {
@@ -33,12 +17,31 @@ exports.postGet = async (req, res) => {
       }else  {
         req.user = user
         }
-     // next()
+      next()
     })
    // next();
   } else {
     return res.send({message: "jwt expired"})
   }
+}
+
+exports.postsGet = async (req, res) => {
+  const id = Number(req.body.id)
+    const posts = await prisma.post.findMany({
+      orderBy: [
+        {
+         id: 'asc'
+        }
+     ],
+      where: {      
+            published: 'true',
+            userId: id
+        }
+    })
+    return res.send(posts);
+}
+
+exports.postGet = async (req, res) => {
   if(req.user) {
 
    const id = Number(req.body.id)
@@ -54,27 +57,6 @@ exports.postGet = async (req, res) => {
 }
 
 exports.mypostsPubslih = async (req, res) => {
-   
-  const bearerHeader = req.body.accessToken;
-
-  if(typeof bearerHeader !== 'undefined' && bearerHeader !== null) {
-    const bearer = bearerHeader.split(' ');
-
-    const bearerToken = bearer[0];
-
-    req.token = bearerToken;
-    jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      if(err) {
-        console.log(err)
-      }else  {
-        req.user = user
-        }
-     // next()
-    })
-   // next();
-  } else {
-    return res.send({message: "jwt expired"})
-  }
   if(req.user) {
 
    const id = Number(req.body.id)
@@ -119,27 +101,6 @@ if(post.published === 'false') {
 }
 
 exports.mypostsDelete = async (req, res) => {
-   
-  const bearerHeader = req.body.accessToken;
-
-  if(typeof bearerHeader !== 'undefined' && bearerHeader !== null) {
-    const bearer = bearerHeader.split(' ');
-
-    const bearerToken = bearer[0];
-
-    req.token = bearerToken;
-    jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      if(err) {
-        console.log(err)
-      }else  {
-        req.user = user
-        }
-     // next()
-    })
-   // next();
-  } else {
-    return res.send({message: "jwt expired"})
-  }
   if(req.user) {
    const id = Number(req.body.id)
 
@@ -155,8 +116,6 @@ await prisma.comment.deleteMany({
           id: id
       }
   })
-
-
 
   const posts = await prisma.post.findMany({
     orderBy: [
@@ -175,28 +134,8 @@ await prisma.comment.deleteMany({
 }
 
 exports.mypostsEdit = async (req, res) => {
-   
-  const bearerHeader = req.body.accessToken;
-
-  if(typeof bearerHeader !== 'undefined' && bearerHeader !== null) {
-    const bearer = bearerHeader.split(' ');
-
-    const bearerToken = bearer[0];
-
-    req.token = bearerToken;
-    jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      if(err) {
-        console.log(err)
-      }else  {
-        req.user = user
-        }
-     // next()
-    })
-   // next();
-  } else {
-    return res.send({message: "jwt expired"})
-  }
   if(req.user) {
+    const user = req.user
     const token = req.token
     const publish = JSON.stringify(req.body.publish)
    const id = Number(req.body.id)
@@ -210,8 +149,9 @@ exports.mypostsEdit = async (req, res) => {
            published: publish,
            userId: req.user.user.id
       }
+      
   })
-  return res.send({message: "Post Edited", token});
+  return res.send({message: "Post Edited", token, user});
 } else {
   return res.json({message: "jwt expired"})
 }
@@ -220,26 +160,7 @@ exports.mypostsEdit = async (req, res) => {
 
 exports.mypostsPost = async (req, res) => {
    
-  const bearerHeader = req.body.accessToken;
-
-  if(typeof bearerHeader !== 'undefined' && bearerHeader !== null) {
-    const bearer = bearerHeader.split(' ');
-
-    const bearerToken = bearer[0];
-
-    req.token = bearerToken;
-    jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      if(err) {
-        console.log(err)
-      }else  {
-        req.user = user
-        }
-     // next()
-    })
-   // next();
-  } else {
-    return res.send({message: "jwt expired"})
-  }
+ 
   if(req.user) {
   const posts = await prisma.post.findMany({
     orderBy: [
@@ -259,28 +180,8 @@ exports.mypostsPost = async (req, res) => {
 
 
 exports.postPost = async (req, res, next) => {
-const bearerHeader = req.body.accessToken;
-
-  if(typeof bearerHeader !== 'undefined' && bearerHeader !== null) {
-    const bearer = bearerHeader.split(' ');
-
-    const bearerToken = bearer[0];
-
-    req.token = bearerToken;
-    jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      if(err) {
-        console.log(err)
-      }else  {
-        req.user = user
-        }
-     // next()
-    })
-   // next();
-  } else {
-    return res.send({message: "jwt expired"})
-  }
-
   if(req.user) {
+    const user = req.user
     const token = req.token
 const publish = JSON.stringify(req.body.publish)
     await prisma.post.create({
@@ -288,12 +189,14 @@ const publish = JSON.stringify(req.body.publish)
             postName: req.body.postname,
             postText: req.body.text,
             published: publish,
+            createdBy: req.user.user.username,
             userId: req.user.user.id
         }
     })
 
-    return res.send({message:'Created Post' ,token})
+    return res.send({message:'Created Post' ,token, user})
   } else {
     return res.json({message: "jwt expired"})
   }
 }
+

@@ -53,7 +53,7 @@ const  Signup = () => {
     return (
         <>
         <div className='signup'>
-        <Link to="/">Home</Link>
+        
         <h1>Signup</h1>
         
         
