@@ -1,5 +1,17 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const databaseUrl =
+  process.env.NODE_ENV === 'test'
+    ? process.env.TEST_DATABASE_URL
+    : process.env.DATABASE_URL;
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: databaseUrl,
+    },
+  },
+});
+
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
@@ -42,15 +54,7 @@ exports.usersGet = async (req, res) => {
   return res.send(users);
 };
 
-exports.userGet = async (req, res) => {
-  const id = Number(req.params.userId);
-  const user = await prisma.user.findUnique({
-    where: {
-      id: id,
-    },
-  });
-  return res.send(user);
-};
+
 
 exports.signupUserPost = async (req, res) => {
   const user = await prisma.user.findUnique({
@@ -82,5 +86,5 @@ exports.signupUserPost = async (req, res) => {
       },
     });
   });
-  res.send({ message: 'Signup successful!' });
+  res.status(200).send({ message: 'Signup successful!' });
 };
