@@ -115,7 +115,7 @@ const MyPosts = () => {
       accessToken: accessToken,
       id: event.currentTarget.value,
     };
-    const url = 'http://localhost:8080/posts/publish';
+    const url = 'https://blogapi-staging.up.railway.app/posts/publish';
     const options = {
       method: 'PUT',
       body: JSON.stringify(data),
