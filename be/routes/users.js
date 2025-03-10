@@ -19,7 +19,7 @@ router.get(
   userController.verifyToken,
   userController.logedInGet
 );// tested
-router.get('/:userId', userController.userGet);
+
 router.post('/signup', userController.signupUserPost); //tested
 
 module.exports = router;
