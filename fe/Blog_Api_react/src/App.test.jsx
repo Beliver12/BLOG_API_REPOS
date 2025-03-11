@@ -7,33 +7,60 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { LogIn } from "./Log-in";
+import {CommentPost} from "./CommentPost"
+import { Link, useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 
-test("LoginForm renders error messages", async () => {
-  const USER_MESSAGE = "Username is required";
-  const PASSWORD_MESSAGE = "Password is required";
+import {
+  RouterProvider,
+  createMemoryRouter,
+} from "react-router-dom";
+import * as React from "react";
+import "@testing-library/jest-dom";
+import {App} from "./App";
+import {Signup} from "./Signup"
 
-  const Stub = createRoutesStub([
+test("event route", async () => {
+  const FAKE_EVENT = { name: "test event" };
+  const routes = [
     {
-      path: "/log-in",
-      Component: LogIn,
-      action() {
-        return {
-          errors: {
-            username: USER_MESSAGE,
-            password: PASSWORD_MESSAGE,
-          },
-        };
-      },
+      path: "/",
+      element: <App />,
+      children: [
+        { path: 'signup', element: <Signup /> },
+      ],
+      loader: () => FAKE_EVENT,
     },
-  ]);
+  ];
 
-  // render the app stub at "/login"
-  render(<Stub initialEntries={["/log-in"]} />);
-
-  // simulate interactions
-  userEvent.click(screen.getByText("log-in"));
-  
+  const router = createMemoryRouter(routes, {
+    initialEntries: ["/", "/"],
+    initialIndex: 1,
+  });
+  <BrowserRouter>
+  render(<RouterProvider router={router} />);
+  </BrowserRouter>
+  await waitFor(() => screen.getByRole("heading"));
+  expect(screen.getByRole("heading")).toHaveTextContent(
+    FAKE_EVENT.name
+  );
 });
+
+describe('LogIn', () => {
+  it('renders LogIn component', () => {
+    <BrowserRouter>
+    render(<LogIn />);
+    </BrowserRouter>
+  });
+});
+
+describe('CommentPost', () => {
+  it('renders CommentPost component', () => {
+    <BrowserRouter>
+    render(<CommentPost />);
+    </BrowserRouter>
+  });
+});
+
 
 describe('something truthy and falsy', () => {
   it('true to be true', () => {

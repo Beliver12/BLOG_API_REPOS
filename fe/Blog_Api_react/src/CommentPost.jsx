@@ -3,7 +3,7 @@ import { data, useOutletContext } from 'react-router-dom';
 
 import { Link, Navigate } from 'react-router-dom';
 
-const CommentPost = () => {
+export const CommentPost = () => {
   debugger;
   const [authorName, setAuthor] = useState('');
   const [text, setText] = useState('');

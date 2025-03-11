@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import './App.css';
 
 
-const LinkForLogIn = ({ message, setMessage }) => {
+export const LinkForLogIn = ({ message, setMessage }) => {
   if (message) {
     return <button onClick={() => setMessage('')}>Log-out</button>;
   }

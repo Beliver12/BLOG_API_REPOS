@@ -7,7 +7,7 @@ export const LogIn = () => {
   debugger;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
- // const { message, setMessage } = useOutletContext();
+  const { message, setMessage } = useOutletContext();
   const [isLogedIn, setIsLogedIn] = useState('');
   const [error, setError] = useState('');
 
