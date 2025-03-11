@@ -199,6 +199,6 @@ exports.postPost = async (req, res, next) => {
 
     return res.send({ message: 'Created Post', token, user });
   } else {
-    return res.json({ message: 'jwt expired' });
+    return res.sendStatus(400).json({ message: 'jwt expired' });
   }
 };

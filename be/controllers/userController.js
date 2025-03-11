@@ -51,7 +51,7 @@ exports.logedInGet = async (req, res) => {
 exports.usersGet = async (req, res) => {
   const users = await prisma.user.findMany({});
   console.log(users);
-  return res.send(users);
+  return res.status(201).send(users);
 };
 
 

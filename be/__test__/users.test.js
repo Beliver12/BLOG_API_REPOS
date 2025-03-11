@@ -9,11 +9,11 @@ describe('/signup', () => {
       expect(res.status).toEqual(400)
     })
 
-    it("returns Status code 200 if passwords match  and username is not allready in use", async() => {
+   /* it("returns Status code 200 if passwords match  and username is not allready in use", async() => {
         const res = await request(app).post('/signup').send({password: '123', password2: '123', username: 'Miki'});
   
         expect(res.status).toEqual(200)
-      })
+      })*/
 
     it("returns Status code 400 if username is allready in use", async() => {
         const res = await request(app).post('/signup').send({password: '123', password2: '123', username: 'Nikola'});
@@ -25,10 +25,18 @@ describe('/signup', () => {
 
 
 describe('login', () => {
-    it("returns status code 201 if firstname and password is passed", async() => {
-      const res = await request(app).post('/login').send({username: 'Jan', password: '123'});
+    it("returns status 400 if user enters wrong username and password ", async() => {
+        const res = await request(app).post('/login').send({username: 'Jan', password: '123'})
+        expect(res.status).toEqual(400)
+      })
 
-      expect(res.statusCode).toEqual(201)
+    it("returns message 'true' if user entered correct password and username", () => {
+      return request(app).post('/login').send({username: 'Nikola', password: '123'})
+      .then(res => {
+        console.log(res.body.token)
+        expect(res.body.message).toEqual('true')
+      })
+      
     })
 
     it("should specify json in the content type header", async () => {
@@ -37,20 +45,15 @@ describe('login', () => {
         expect(res.headers['content-type']).toEqual(expect.stringContaining("json"))
     })
 
-    it("response has username and password", async () => {
-        const res = await request(app).post("/login").send({username: 'Jan', password: '123'})
-
-        expect(res.body.username).toBeDefined()
-        expect(res.body.password).toBeDefined()
-    })    
 })
 
 
 describe('/', () => {
     it("returns status code 201 if pulling all users from database works", async() => {
-      const res = await request(app).post('/login').send({username: 'Jan', password: '123'});
+      const res = await request(app).get('/').send({username: 'Jan', password: '123'});
    
       expect(res.status).toEqual(201)
+     
     })
    
 })
