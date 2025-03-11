@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import './App.css';
 import './main';
-debugger;
 
 const LinkForLogIn = ({ message, setMessage }) => {
   if (message) {
