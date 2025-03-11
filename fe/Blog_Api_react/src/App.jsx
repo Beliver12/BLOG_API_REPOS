@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-
+import { Link, useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import './App.css';
-import './main';
+
 
 const LinkForLogIn = ({ message, setMessage }) => {
   if (message) {
@@ -33,7 +32,7 @@ const LinkForCheckingYourOwnPost = ({ message }) => {
   return;
 };
 
-const App = () => {
+export const App = () => {
   const token = localStorage.getItem('accessToken');
   const user = localStorage.getItem('user');
   const [message, setMessage] = useState(user);
@@ -49,6 +48,8 @@ const App = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
   }
+
+  
 
   return (
     <div className="navbar">
@@ -89,6 +90,7 @@ const App = () => {
         </div>
       </div>
     </div>
+   
   );
 };
 

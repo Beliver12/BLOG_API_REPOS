@@ -12,6 +12,7 @@ import EditPost from './EditPost.jsx';
 import CommentPost from './CommentPost.jsx';
 import EditComment from './EditComment.jsx';
 import Post from './Post.jsx';
+import Error from './Error.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -26,11 +27,14 @@ const router = createBrowserRouter([
       { path: 'comment-post', element: <CommentPost /> },
       { path: 'edit-comment', element: <EditComment /> },
       { path: 'post', element: <Post /> },
+      { path: '*', element: <Error /> },
     ],
   },
 ]);
 const root = document.getElementById('root');
 console.log(root, 'root')
 createRoot(document.getElementById('root')).render(
+  <StrictMode>
   <RouterProvider router={router} />
+  </StrictMode>
 );

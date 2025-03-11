@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { data, useOutletContext } from 'react-router-dom';
 
 import { Link, Navigate } from 'react-router-dom';
-import './main';
+
 const Posts = () => {
   debugger;
   const [posts, setPosts] = useState('');

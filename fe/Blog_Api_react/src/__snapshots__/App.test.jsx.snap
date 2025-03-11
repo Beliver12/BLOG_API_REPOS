@@ -1,0 +1,159 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`start page test > renders correctly 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="navbar"
+      >
+        <nav>
+          <h1>
+            MY-BLOG
+          </h1>
+          <ul>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
+            <a
+              data-discover="true"
+              href="/posts"
+            >
+              Posts
+            </a>
+            <a
+              data-discover="true"
+              href="/signup"
+            >
+              Signup Page
+            </a>
+            <a
+              data-discover="true"
+              href="/log-in"
+            >
+              Log-in Page
+            </a>
+          </ul>
+        </nav>
+        <div
+          class="main"
+        >
+          <div
+            class="Languages"
+          >
+            <h1>
+              Created with:
+            </h1>
+            <img
+              alt=""
+              src="..//icons8-nodejs-144.png"
+            />
+            <a
+              href="https://icons8.com/icons"
+            >
+              <strong>
+                Nodejs icon by Icons8
+              </strong>
+            </a>
+            <img
+              alt=""
+              src="..//icons8-express-js-128.png"
+            />
+            <a
+              href="https://icons8.com/icons"
+            >
+              <strong>
+                Express Js icon by Icons8
+              </strong>
+            </a>
+            <img
+              alt=""
+              src="..//icons8-react-100.png"
+            />
+            <a
+              href="https://icons8.com/icons"
+            >
+              <strong>
+                React icon by Icons8
+              </strong>
+            </a>
+            <img
+              alt=""
+              src="..//icons8-json-web-token-144.png"
+            />
+            <a
+              href="https://icons8.com/icons"
+            >
+              <strong>
+                JSON Web Token icon by Icons8
+              </strong>
+            </a>
+            <a
+              href="https://icons8.com/icons"
+            >
+              Square icon by Icons8
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div />
+  </body>,
+  "container": <div />,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

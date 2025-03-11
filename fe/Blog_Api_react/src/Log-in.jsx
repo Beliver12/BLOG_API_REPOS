@@ -3,11 +3,11 @@ import { data, useOutletContext } from 'react-router-dom';
 
 import { Link, Navigate } from 'react-router-dom';
 
-const LogIn = () => {
+export const LogIn = () => {
   debugger;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { message, setMessage } = useOutletContext();
+ // const { message, setMessage } = useOutletContext();
   const [isLogedIn, setIsLogedIn] = useState('');
   const [error, setError] = useState('');
 
@@ -58,7 +58,7 @@ const LogIn = () => {
   return (
     <>
       <div className="log-in">
-        <h1>Log-in</h1>
+        <h1>log-in</h1>
 
         <form onSubmit={handleSubmit} method="POST">
           <p>{error}</p>
@@ -69,6 +69,7 @@ const LogIn = () => {
             name="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
           <input
             placeholder="password"
@@ -76,6 +77,7 @@ const LogIn = () => {
             name="password"
             id="password"
             value={password}
+            required
             onChange={(e) => setPassword(e.target.value)}
           />
 
