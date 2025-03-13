@@ -14,7 +14,11 @@ import EditComment from './EditComment.jsx';
 import Post from './Post.jsx';
 import Error from './Error.jsx';
 const router = createBrowserRouter([
+  
   {
+    
+
+   
     path: '/',
     element: <App />,
     children: [
