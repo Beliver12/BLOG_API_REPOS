@@ -9,12 +9,12 @@ import {
 import {
   RouterProvider,
   createMemoryRouter,
-} from "react-router-dom";
+} from "react-router";
 import "@testing-library/jest-dom";
-import {App} from "./App";
+import {App, fetchLogOutData} from "./App";
 import {Signup} from "./Signup"
 
-global.fetch = vi.fn().mockResolvedValue({json: () => ({res: "hello"})});
+//global.fetch = vi.fn().mockResolvedValue({json: () => ({res: "hello"})});
 
 
 test("event route", async () => {
@@ -34,7 +34,8 @@ test("event route", async () => {
   });
   
   render(<RouterProvider router={router} />);
-  
+  const url = 'http://localhost:8080/log-out'
+  fetchLogOutData(url)
   await waitFor(() => screen.getAllByRole("heading"));
   expect(screen.getAllByRole("heading")[0]).toHaveTextContent(
     "MY-BLOG"

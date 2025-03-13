@@ -19,7 +19,7 @@ export const LogIn = () => {
       username: username,
     };
 
-    const url = 'https://blogapi-staging.up.railway.app/login'; //when deeploying change url, to Railway live url.
+    const url = 'http://localhost:8080/login'; //when deeploying change url, to Railway live url.
 
     const options = {
       method: 'POST',

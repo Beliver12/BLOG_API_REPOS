@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, BrowserRouter, Routes, Route } from 'react-router';
+import { Link, useNavigate, BrowserRouter, Routes, Route, data } from 'react-router';
 import { Outlet } from 'react-router';
 import './App.css';
 
@@ -33,6 +33,23 @@ const LinkForCheckingYourOwnPost = ({ message }) => {
   return;
 };
 
+export async function fetchLogOutData(url) {
+
+  try{
+  await fetch(url)
+     .then((response) => response.json())
+     .then((data) => {
+       console.log(data);
+     })
+    } catch(error){
+
+   localStorage.removeItem('accessToken');
+   localStorage.removeItem('user');
+   return data;
+   
+}
+   }
+
 export const App = () => {
   const token = localStorage.getItem('accessToken');
   const user = localStorage.getItem('user');
@@ -40,14 +57,9 @@ export const App = () => {
   ///const [accessToken, setToken] = useState(token)
 
   if (!message) {
-    //alert("Session expired Log-in again")
-    fetch('http://localhost:8080/log-out')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
+    const url = 'http://localhost:8080/log-out'
+    fetchLogOutData(url)
+  
   }
 
   
