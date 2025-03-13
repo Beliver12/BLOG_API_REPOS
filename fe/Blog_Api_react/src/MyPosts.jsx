@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, Navigate, useOutletContext } from 'react-router-dom';
-
-import { Outlet } from 'react-router-dom';
+import { Link, Navigate, useOutletContext, Outlet } from 'react-router';
 
 const MyPosts = () => {
   debugger;

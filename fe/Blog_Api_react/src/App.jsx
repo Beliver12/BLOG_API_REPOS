@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
+import { Link, useNavigate, BrowserRouter, Routes, Route } from 'react-router';
+import { Outlet } from 'react-router';
 import './App.css';
 
 
@@ -57,7 +57,7 @@ export const App = () => {
       <nav>
         <h1>MY-BLOG</h1>
         <ul>
-        <BrowserRouter>
+     
           <Link to="/">Home</Link>
           <Link to="/posts">Posts</Link>
           <LinkForSignUp message={message} />
@@ -66,7 +66,7 @@ export const App = () => {
           {message ? <img src="..//icons8-user-24.png" alt="" /> : ''}
           {message ? <h3>{message}</h3> : ''}
           <LinkForLogIn setMessage={setMessage} message={message} />
-          </BrowserRouter>
+        
         </ul>
       </nav>
       <div className="main">
