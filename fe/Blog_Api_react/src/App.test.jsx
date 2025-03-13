@@ -1,4 +1,5 @@
-import { describe, it, expect} from 'vitest';
+import { describe, it} from 'vitest';
+/*
 import { createRoutesStub } from "react-router";
 import {
   render,
@@ -59,6 +60,57 @@ describe('CommentPost', () => {
     render(<CommentPost />);
     </BrowserRouter>
   });
+});
+*/
+// app.test.js
+
+import userEvent from '@testing-library/user-event'
+import React from 'react'
+import '@testing-library/jest-dom'
+import { LocationDisplay} from './App'
+import {BrowserRouter, MemoryRouter} from 'react-router-dom'
+import { expect, vi, test} from 'vitest';
+
+import {
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
+
+import {
+  RouterProvider,
+  createMemoryRouter,
+} from "react-router-dom";
+import "@testing-library/jest-dom";
+import {App} from "./App";
+import {Signup} from "./Signup"
+
+global.fetch = vi.fn().mockResolvedValue({json: () => ({res: "hello"})});
+
+
+test("event route", async () => {
+  const routes = [
+    {
+      path: "/",
+      element: <App />,
+      children: [
+        { path: 'signup', element: <Signup /> },
+      ],
+    },
+  ];
+
+  const router = createMemoryRouter(routes, {
+    initialEntries: ["/", "/"],
+    initialIndex: 1,
+  });
+  
+  render(<RouterProvider router={router} />);
+  
+  await waitFor(() => screen.getAllByRole("heading"));
+  expect(screen.getAllByRole("heading")[0]).toHaveTextContent(
+    "MY-BLOG"
+  );
+  screen.debug()
 });
 
 
