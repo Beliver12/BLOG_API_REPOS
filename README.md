@@ -1,7 +1,3 @@
-Based on your GitHub repository [Beliver12/BLOG_API_REPOS](https://github.com/Beliver12/BLOG_API_REPOS), here's a refined `README.md` to better showcase your project:
-
----
-
 # BLOG_API_REPOS
 
 A full-stack blogging platform featuring user authentication, post creation, and comment management.
