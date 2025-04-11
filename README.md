@@ -13,7 +13,7 @@ A full-stack blogging platform featuring user authentication, post creation, and
 
 ## Live Demo
 
-Access the live application here: [blog-api-repos.vercel.app](https://blog-api-repos.vercel.app)
+Access the live application here: [blog-api-repos.vercel.app]([https://blog-api-repos.vercel.app](https://blog-api-repos-y592.vercel.app/))
 
 ## Technologies Used
 
